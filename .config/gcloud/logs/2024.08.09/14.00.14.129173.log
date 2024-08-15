@@ -1,0 +1,19 @@
+2024-08-09 14:00:14,129 DEBUG    root            Loaded Command Group: ['gcloud', 'auth']
+2024-08-09 14:00:14,130 DEBUG    root            Loaded Command Group: ['gcloud', 'auth', 'application_default']
+2024-08-09 14:00:14,140 DEBUG    root            Loaded Command Group: ['gcloud', 'auth', 'application-default', 'set_quota_project']
+2024-08-09 14:00:14,140 DEBUG    root            Running [gcloud.auth.application-default.set-quota-project] with arguments: [QUOTA_PROJECT_ID: "graphical-bus-431909-u0"]
+2024-08-09 14:00:14,152 INFO     root            Using alternate credentials from file: [/Users/sterr/.config/gcloud/application_default_credentials.json]
+2024-08-09 14:00:14,153 INFO     root            Using alternate credentials from file: [/Users/sterr/.config/gcloud/application_default_credentials.json]
+2024-08-09 14:00:14,182 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): cloudresourcemanager.googleapis.com:443
+2024-08-09 14:00:15,028 DEBUG    urllib3.connectionpool https://cloudresourcemanager.googleapis.com:443 "POST /v1/projects/graphical-bus-431909-u0:testIamPermissions?alt=json HTTP/1.1" 200 None
+2024-08-09 14:00:15,032 INFO     ___FILE_ONLY___ 
+Credentials saved to file: [/Users/sterr/.config/gcloud/application_default_credentials.json]
+
+2024-08-09 14:00:15,032 INFO     ___FILE_ONLY___ 
+These credentials will be used by any library that requests Application Default Credentials (ADC).
+
+2024-08-09 14:00:15,032 INFO     ___FILE_ONLY___ 
+Quota project "graphical-bus-431909-u0" was added to ADC which can be used by Google client libraries for billing and quota. Note that some services may still bill the project owning the resource.
+
+2024-08-09 14:00:15,033 DEBUG    root            Chosen display Format:none
+2024-08-09 14:00:15,033 INFO     root            Display format: "none"
