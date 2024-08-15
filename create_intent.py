@@ -1,9 +1,10 @@
 import requests
 import json
+import argparse
 
 from google.cloud import dialogflow
 
-url = 'https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-4dac-9726-2d1fa9c44f20/questions.json'
+# url = 'https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-4dac-9726-2d1fa9c44f20/questions.json'
 
 
 def download_intent(url):
@@ -47,7 +48,10 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
 
 def main():
 
-    download_intent(url)
+    parser = argparse.ArgumentParser(description='По указаной ссылки с json-файлом добавляет запросы и ответы в GoogleFlow')
+    parser.add_argument('--url', '-u', help='Укажите Url файла с запросами')
+    args = parser.parse_args()
+    download_intent(args)
 
     with open('intents.txt', 'r', encoding="utf-8") as my_file:
         file_content = my_file.read()
