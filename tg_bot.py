@@ -54,6 +54,8 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
 
     print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
     return response.query_result.fulfillment_text
+
+
 def start(update: Update, context: CallbackContext) -> None:
     user = update.effective_user
     update.message.reply_markdown_v2(
@@ -61,6 +63,7 @@ def start(update: Update, context: CallbackContext) -> None:
         reply_markup=ForceReply(selective=True),
     )
     # context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+
 
 def talk(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(
