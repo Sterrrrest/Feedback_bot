@@ -22,11 +22,6 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 
-def help_command(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')
-
-
 def detect_intent_texts(project_id, session_id, texts, language_code):
 
     session_client = dialogflow.SessionsClient()
@@ -62,7 +57,6 @@ def start(update: Update, context: CallbackContext) -> None:
         fr'Hi {user.mention_markdown_v2()}\!',
         reply_markup=ForceReply(selective=True),
     )
-    # context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
 
 def talk(update: Update, context: CallbackContext) -> None:
@@ -74,23 +68,17 @@ def talk(update: Update, context: CallbackContext) -> None:
     )
 
 
-
 if __name__ == '__main__':
+    while True:
+        try:
+            start_handler = CommandHandler('start', start)
 
+            dispatcher.add_handler(CommandHandler("start", start))
+            dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), talk))
 
-    start_handler = CommandHandler('start', start)
+            updater.start_polling()
+            updater.idle()
 
-    user = Update.effective_user
-
-    words = ['Привет']
-    # dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), detect_intent_texts('graphical-bus-431909-u0', user, words, 'en-US')))
-
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
-
-    dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), talk))
-
-    updater.start_polling()
-
-    updater.idle()
+        except Exception as e:
+            print('Error', e)
 
