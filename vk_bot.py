@@ -49,7 +49,7 @@ def detect_intent_texts(project_id, session_id, texts, language_code):
         return response.query_result.fulfillment_text
 
 
-def echo(event, vk_api):
+def get_response(event, vk_api):
     vk_api.messages.send(user_id=event.user_id,
                          message=detect_intent_texts('graphical-bus-431909-u0',
                             event.user_id,
@@ -66,6 +66,6 @@ if __name__ == "__main__":
         try:
             for event in longpoll.listen():
                 if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-                    echo(event, vk_api)
+                    get_response(event, vk_api)
         except Exception as e:
             print('Ошибка', e)
