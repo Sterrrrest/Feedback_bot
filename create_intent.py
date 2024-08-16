@@ -4,8 +4,6 @@ import argparse
 
 from google.cloud import dialogflow
 
-# url = 'https://dvmn.org/media/filer_public/a7/db/a7db66c0-1259-4dac-9726-2d1fa9c44f20/questions.json'
-
 
 def download_intent(url):
     try:
