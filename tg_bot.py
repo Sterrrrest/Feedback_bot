@@ -1,54 +1,16 @@
 import logging
+import requests
+import time
 
 from environs import Env
 
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
-from google.cloud import dialogflow_v2beta1 as dialogflow
-from google.cloud import dialogflow
 
+from get_intents import detect_intent_texts
 
-env = Env()
-env.read_env()
-
-tg_token = env.str('TG_TOKEN')
-
-updater = Updater(token=tg_token)
-dispatcher = updater.dispatcher
-
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-
-
-def detect_intent_texts(project_id, session_id, texts, language_code):
-
-    session_client = dialogflow.SessionsClient()
-
-    session = session_client.session_path(project_id, session_id)
-    print("Session path: {}\n".format(session))
-
-    # for text in texts:
-    text_input = dialogflow.TextInput(text=texts, language_code=language_code)
-
-    query_input = dialogflow.QueryInput(text=text_input)
-
-    response = session_client.detect_intent(
-        request={"session": session, "query_input": query_input}
-    )
-
-    print("=" * 20)
-    print("Query text: {}".format(response.query_result.query_text))
-    print(
-        "Detected intent: {} (confidence: {})\n".format(
-            response.query_result.intent.display_name,
-            response.query_result.intent_detection_confidence,
-        )
-    )
-
-    print("Fulfillment text: {}\n".format(response.query_result.fulfillment_text))
-    return response.query_result.fulfillment_text
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -61,14 +23,22 @@ def start(update: Update, context: CallbackContext) -> None:
 
 def talk(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(
-        detect_intent_texts('graphical-bus-431909-u0',
-                            update.effective_user.id,
-                            update.message.text,
-                            'en-US')
+        detect_intent_texts(g_project_id, update.effective_user.id, update.message.text, 'en-US')
     )
 
 
 if __name__ == '__main__':
+
+    env = Env()
+    env.read_env()
+
+    tg_token = env.str('TG_TOKEN')
+    g_project_id = env.str('GOOGLE_PROJECT_ID')
+    updater = Updater(token=tg_token)
+    dispatcher = updater.dispatcher
+
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+
     while True:
         try:
             start_handler = CommandHandler('start', start)
@@ -81,4 +51,6 @@ if __name__ == '__main__':
 
         except Exception as e:
             print('Error', e)
-
+            time.sleep(60)
+        except requests.ConnectionError:
+            time.sleep(30)
