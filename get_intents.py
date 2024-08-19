@@ -30,6 +30,7 @@ def vk_detect_intent_texts(project_id, session_id, texts, language_code):
     if not response.query_result.intent.is_fallback:
         return response.query_result.fulfillment_text
 
+
 def tg_detect_intent_texts(project_id, session_id, texts, language_code):
 
     session_client = dialogflow.SessionsClient()

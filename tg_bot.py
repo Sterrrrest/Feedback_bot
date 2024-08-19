@@ -3,6 +3,7 @@ import requests
 import time
 
 from environs import Env
+from functools import partial
 
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
@@ -21,19 +22,20 @@ def start(update: Update, context: CallbackContext) -> None:
     )
 
 
-def talk(update: Update, context: CallbackContext) -> None:
+def talk(g_project, update: Update, context: CallbackContext) -> None:
     update.message.reply_text(
-        tg_detect_intent_texts(g_project_id, update.effective_user.id, update.message.text, 'en-US')
+        tg_detect_intent_texts(g_project, update.effective_user.id, update.message.text, 'en-US')
     )
 
 
-if __name__ == '__main__':
-
+def main():
     env = Env()
     env.read_env()
 
     tg_token = env.str('TG_TOKEN')
     g_project_id = env.str('GOOGLE_PROJECT_ID')
+
+    bot_talk = partial(talk, g_project_id)
     updater = Updater(token=tg_token)
     dispatcher = updater.dispatcher
 
@@ -44,7 +46,7 @@ if __name__ == '__main__':
             start_handler = CommandHandler('start', start)
 
             dispatcher.add_handler(CommandHandler("start", start))
-            dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), talk))
+            dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), bot_talk))
 
             updater.start_polling()
             updater.idle()
@@ -54,3 +56,7 @@ if __name__ == '__main__':
             time.sleep(60)
         except requests.ConnectionError:
             time.sleep(30)
+
+
+if __name__ == '__main__':
+    main()
