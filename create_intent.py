@@ -47,10 +47,7 @@ def main():
         intents_request = requests.get(args.url)
         intents_request.raise_for_status()
 
-        with open('intents.txt', 'r', encoding="utf-8") as file:
-            file_content = file.read()
-
-        intents = json.loads(file_content)
+        intents = json.loads(intents_request.content)
 
         for intent, responses in intents.items():
             display_name = intent
