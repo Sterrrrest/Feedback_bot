@@ -52,10 +52,10 @@ def main():
 
         intents = json.loads(file_content)
 
-        for k, v in intents.items():
-            display_name = k
-            training_phrases_parts = v.get('questions')
-            message_texts = v.get('answer')
+        for intent, responses in intents.items():
+            display_name = intent
+            training_phrases_parts = responses.get('questions')
+            message_texts = responses.get('answer')
             create_intent(g_project_id, display_name, training_phrases_parts, [message_texts])
 
     except Exception as e:
