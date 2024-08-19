@@ -7,7 +7,7 @@ from environs import Env
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
-from get_intents import detect_intent_texts
+from get_intents import tg_detect_intent_texts
 
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ def start(update: Update, context: CallbackContext) -> None:
 
 def talk(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(
-        detect_intent_texts(g_project_id, update.effective_user.id, update.message.text, 'en-US')
+        tg_detect_intent_texts(g_project_id, update.effective_user.id, update.message.text, 'en-US')
     )
 
 

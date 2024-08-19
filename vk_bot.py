@@ -4,7 +4,7 @@ import time
 import vk_api
 import random
 
-from get_intents import detect_intent_texts
+from get_intents import vk_detect_intent_texts
 from vk_api.longpoll import VkLongPoll, VkEventType
 from environs import Env
 
@@ -13,7 +13,7 @@ logger = logging.getLogger("Debug")
 
 def get_response(event, vk_api):
     vk_api.messages.send(user_id=event.user_id,
-                         message=detect_intent_texts(g_project_id, event.user_id, event.text, 'en-US'),
+                         message=vk_detect_intent_texts(g_project_id, event.user_id, event.text, 'en-US'),
                          random_id=random.randint(1, 1000)
     )
 
